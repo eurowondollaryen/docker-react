@@ -1,0 +1,18 @@
+sudo: required #관리자 권한 여부
+
+language: generic #언어설정
+
+services:
+  - docker #서비스 환경은 Docker로
+
+before_install:
+  - echo "start Creating an image with dockerfile"
+  - docker build -t docker-react -f Dockerfile.dev
+
+script:
+  - docker run -e CI=true docker-react npm run test -- --coverage
+#-- --coverage : 더 자세한 테스트 내역을 보여달라
+# -e CI=true : travis CI에서 실행해라
+
+after_success:
+  - echo "Test Success!!"
